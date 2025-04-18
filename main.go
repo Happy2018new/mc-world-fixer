@@ -113,20 +113,12 @@ func fixThisDay(wg *sync.WaitGroup) {
 			cp := define.ChunkPos([2]int32{int32(x), int32(z)})
 			dm := define.Dimension(dim)
 
-			if x > 1875000 || z > 1875000 {
-				pterm.Error.Println("???a", x, z, dim)
-				if p.Delete(ck.Key()) != nil {
-					panic("aaaa?")
-				}
-				return true
-			}
-
 			for i := -4; i <= 23; i++ {
 				c, idx := LoadSubChunk(p, dm, protocol.SubChunkPos{int32(x), int32(i), int32(z)}, i)
 				if c == nil {
 					continue
 				}
-				pterm.Success.Println("fix", x, z, dm)
+				pterm.Success.Println("fix", int32(x), int32(z), dm)
 				if mcdb.SaveSubChunk(dm, protocol.SubChunkPos{int32(x), int32(idx), int32(z)}, c) != nil {
 					panic("??? should not happened")
 				}
@@ -140,7 +132,7 @@ func fixThisDay(wg *sync.WaitGroup) {
 			if mcdb.SaveFullSubChunkBlobHash(dm, cp, hashes) != nil {
 				panic("error save blob hash")
 			}
-			pterm.Warning.Println("update hash", x, z, dm, hashes)
+			pterm.Warning.Println("update hash", int32(x), int32(z), dm, hashes)
 		}
 
 		return true
@@ -181,14 +173,6 @@ func fixDayAgo(wg *sync.WaitGroup) {
 			cp := define.ChunkPos([2]int32{int32(x), int32(z)})
 			dm := define.Dimension(dim)
 
-			if x > 1875000 || z > 1875000 {
-				pterm.Error.Println("???b", x, z, dim)
-				if p.Delete(ck.Key()) != nil {
-					panic("vvvvv?")
-				}
-				return true
-			}
-
 			if mcdb.SaveDeltaUpdate(dm, cp, nil) != nil {
 				panic("a1")
 			}
@@ -211,7 +195,7 @@ func fixDayAgo(wg *sync.WaitGroup) {
 				}
 			}
 
-			pterm.Info.Println("clean delta update", x, z, dm)
+			pterm.Info.Println("clean delta update", int32(x), int32(z), dm)
 		}
 
 		return true
