@@ -118,7 +118,7 @@ func fixThisDay(wg *sync.WaitGroup) {
 				if c == nil {
 					continue
 				}
-				pterm.Success.Println("fix", int32(x), int32(z), dm)
+				pterm.Success.Println("fix", int32(x), int32(idx), int32(z), dm)
 				if mcdb.SaveSubChunk(dm, protocol.SubChunkPos{int32(x), int32(idx), int32(z)}, c) != nil {
 					panic("??? should not happened")
 				}
