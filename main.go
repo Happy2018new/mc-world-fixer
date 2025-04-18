@@ -113,6 +113,14 @@ func fixThisDay(wg *sync.WaitGroup) {
 			cp := define.ChunkPos([2]int32{int32(x), int32(z)})
 			dm := define.Dimension(dim)
 
+			if x > 1875000 || z > 1875000 {
+				pterm.Error.Println("???a", x, z, dim)
+				if p.Delete(ck.Key()) != nil {
+					panic("aaaa?")
+				}
+				return true
+			}
+
 			for i := -4; i <= 23; i++ {
 				c, idx := LoadSubChunk(p, dm, protocol.SubChunkPos{int32(x), int32(i), int32(z)}, i)
 				if c == nil {
@@ -172,6 +180,14 @@ func fixDayAgo(wg *sync.WaitGroup) {
 
 			cp := define.ChunkPos([2]int32{int32(x), int32(z)})
 			dm := define.Dimension(dim)
+
+			if x > 1875000 || z > 1875000 {
+				pterm.Error.Println("???b", x, z, dim)
+				if p.Delete(ck.Key()) != nil {
+					panic("vvvvv?")
+				}
+				return true
+			}
 
 			if mcdb.SaveDeltaUpdate(dm, cp, nil) != nil {
 				panic("a1")
